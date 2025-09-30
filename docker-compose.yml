@@ -1,38 +1,28 @@
-# services:
-#   uptime-kuma-alert-noti-svm:
-#     image: louislam/uptime-kuma:1
-#     container_name: uptime-kuma-alert-noti-svm
-#     volumes:
-#       - ./uptime-kuma-data:/app/data
-#     restart: unless-stopped
-#     networks:
-#       - monitoring
-
-#   nginx:
-#     image: nginx:alpine
-#     container_name: uptime-kuma-nginx
-#     ports:
-#       - "80:80"
-#       - "443:443"
-#     volumes:
-#       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-#       - ./nginx/ssl:/etc/nginx/ssl:ro
-#     depends_on:
-#       - uptime-kuma-alert-noti-svm
-#     restart: unless-stopped
-#     networks:
-#       - monitoring
-
-# networks:
-#   monitoring:
-#     driver: bridge
-
 services:
-  uptime-kuma:
+  uptime-kuma-alert-noti-svm:
     image: louislam/uptime-kuma:1
+    container_name: uptime-kuma-alert-noti-svm
     volumes:
-      - ./data:/app/data
-    ports:
-      # <Host Port>:<Container Port>
-      - 80:3001
+      - ./uptime-kuma-data:/app/data
     restart: unless-stopped
+    networks:
+      - monitoring
+
+  nginx:
+    image: nginx:alpine
+    container_name: uptime-kuma-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - uptime-kuma-alert-noti-svm
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
